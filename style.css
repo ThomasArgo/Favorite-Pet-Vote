@@ -29,6 +29,9 @@ body {
 
   width: 100%;
   padding: 40px 20px 100px;
+
+  position: relative;
+  z-index: 1;
 }
 
 /* TITLE */
@@ -95,6 +98,7 @@ h1 {
   font-size: 14px;
 
   backdrop-filter: blur(6px);
+  z-index: 1;
 }
 
 /* BACKGROUND BUBBLES */
@@ -104,67 +108,69 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: 0;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .background-bubbles span {
   position: absolute;
-  bottom: -150px;
+  bottom: -100px;
   border-radius: 50%;
-  background: rgba(0, 150, 255, 0.08);
+  background: rgba(0, 150, 255, 0.12);
   animation: rise linear infinite;
 }
 
-/* Bubble variations */
+/* SMALL MODERN BUBBLES */
 .background-bubbles span:nth-child(1) {
   left: 10%;
-  width: 60px;
-  height: 60px;
+  width: 18px;
+  height: 18px;
   animation-duration: 18s;
 }
 .background-bubbles span:nth-child(2) {
   left: 25%;
-  width: 100px;
-  height: 100px;
-  animation-duration: 25s;
+  width: 26px;
+  height: 26px;
+  animation-duration: 22s;
 }
 .background-bubbles span:nth-child(3) {
   left: 40%;
-  width: 40px;
-  height: 40px;
-  animation-duration: 15s;
+  width: 14px;
+  height: 14px;
+  animation-duration: 16s;
 }
 .background-bubbles span:nth-child(4) {
   left: 60%;
-  width: 120px;
-  height: 120px;
-  animation-duration: 30s;
+  width: 32px;
+  height: 32px;
+  animation-duration: 26s;
 }
 .background-bubbles span:nth-child(5) {
   left: 75%;
-  width: 70px;
-  height: 70px;
+  width: 20px;
+  height: 20px;
   animation-duration: 20s;
 }
 .background-bubbles span:nth-child(6) {
   left: 90%;
-  width: 50px;
-  height: 50px;
-  animation-duration: 22s;
+  width: 16px;
+  height: 16px;
+  animation-duration: 24s;
 }
 
-/* Animation */
+/* ANIMATION */
 @keyframes rise {
   0% {
-    transform: translateY(0) scale(1);
-    opacity: 0.2;
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.25;
   }
   50% {
+    transform: translateY(-50vh) translateX(15px) scale(1.1);
     opacity: 0.35;
   }
   100% {
-    transform: translateY(-110vh) scale(1.2);
+    transform: translateY(-110vh) translateX(-15px) scale(1.2);
     opacity: 0;
   }
 }
