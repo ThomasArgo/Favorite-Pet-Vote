@@ -1,13 +1,27 @@
-const SUPABASE_URL = "https://zosvpxwhvumlthebbxfc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_9vRHcUQf-hwXuWEU7NyRgA_-Upmoj7Q";
+// Supabase client
+const db = supabase.createClient(
+  "https://zosvpxwhvumlthebbxfc.supabase.co",
+  "sb_publishable_9vRHcUQf-hwXuWEU7NyRgA_-Upmoj7Q"
+);
 
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let chart;
 
-async function vote(pet) {
-  await db.from("pet_votes").insert([{ pet }]);
+// Prevent multiple votes
+function vote(pet) {
+  if (localStorage.getItem("voted") === "yes") {
+    alert("You already voted.");
+    return;
+  }
+
+  db.from("pet_votes")
+    .insert([{ pet }])
+    .then(() => {
+      localStorage.setItem("voted", "yes");
+      loadVotes();
+    });
 }
 
-// Load initial votes
+// Load votes and update chart
 async function loadVotes() {
   const { data } = await db.from("pet_votes").select("*");
 
@@ -15,32 +29,42 @@ async function loadVotes() {
   const cat = data.filter(v => v.pet === "cat").length;
   const other = data.filter(v => v.pet === "other").length;
 
-  // Update text counts
-  document.getElementById("dogCount").textContent = dog;
-  document.getElementById("catCount").textContent = cat;
-  document.getElementById("otherCount").textContent = other;
-
-  // Percentages
-  const total = dog + cat + other;
-  const dogPct = total ? (dog / total) * 100 : 0;
-  const catPct = total ? (cat / total) * 100 : 0;
-  const otherPct = total ? (other / total) * 100 : 0;
-
-  // Update bar widths
-  document.querySelector(".dogBar").style.width = dogPct + "%";
-  document.querySelector(".catBar").style.width = catPct + "%";
-  document.querySelector(".otherBar").style.width = otherPct + "%";
+  renderChart(dog, cat, other);
 }
 
-// Real-time listener
-db.channel("pet-votes-channel")
-  .on(
-    "postgres_changes",
-    { event: "INSERT", schema: "public", table: "pet_votes" },
-    () => {
-      loadVotes(); // refresh graph instantly
+// Render Chart.js bar graph
+function renderChart(dog, cat, other) {
+  const ctx = document.getElementById("voteChart").getContext("2d");
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Dog", "Cat", "Other"],
+      datasets: [
+        {
+          label: "Votes",
+          data: [dog, cat, other],
+          backgroundColor: ["#4CAF50", "#FFC107", "#F44336"]
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { stepSize: 1 }
+        }
+      }
     }
-  )
+  });
+}
+
+// Realtime updates
+db.channel("realtime:pet_votes")
+  .on("postgres_changes", { event: "*", schema: "public", table: "pet_votes" }, loadVotes)
   .subscribe();
 
 // Initial load
