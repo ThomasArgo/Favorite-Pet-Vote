@@ -1,0 +1,72 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.buttons button {
+  margin: 10px;
+  padding: 12px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #0070f3;
+  color: white;
+  transition: 0.2s;
+}
+
+.buttons button:hover {
+  background: #0059c1;
+}
+
+.results p {
+  font-size: 20px;
+  margin: 8px 0;
+}
+
+/* --- GRAPH STYLING --- */
+
+.graph {
+  margin-top: 30px;
+  width: 100%;
+}
+
+.bar {
+  height: 40px;
+  margin: 12px 0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  padding-left: 10px;
+  transition: width 0.4s ease;
+}
+
+.dogBar {
+  background: #4CAF50; /* green */
+  width: 0%;
+}
+
+.catBar {
+  background: #FFC107; /* yellow */
+  width: 0%;
+  color: black;
+}
+
+.otherBar {
+  background: #F44336; /* red */
+  width: 0%;
+}
