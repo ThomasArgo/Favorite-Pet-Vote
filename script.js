@@ -21,7 +21,7 @@ function vote(pet) {
     });
 }
 
-// Load votes and update chart
+// Load votes
 async function loadVotes() {
   const { data, error } = await db.from("pet_votes").select("*");
 
@@ -37,7 +37,7 @@ async function loadVotes() {
   renderChart(dog, cat, other);
 }
 
-// Render Chart.js graph
+// Render chart
 function renderChart(dog, cat, other) {
   const ctx = document.getElementById("voteChart").getContext("2d");
 
