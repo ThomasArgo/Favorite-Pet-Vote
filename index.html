@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta-name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Favorite Pet Vote</title>
 
   <!-- Chart.js -->
@@ -14,21 +14,22 @@
 
   <div class="background-bubbles"></div>
 
-  <h1>Vote for Your Favorite Pet</h1>
+  <main class="container">
+    <h1>Vote for Your Favorite Pet</h1>
 
-  <div class="buttons">
-    <button onclick="vote('dog')">Dog</button>
-    <button onclick="vote('cat')">Cat</button>
-    <button onclick="vote('other')">Other</button>
-  </div>
+    <div class="buttons">
+      <button onclick="vote('dog')">Dog</button>
+      <button onclick="vote('cat')">Cat</button>
+      <button onclick="vote('other')">Other</button>
+    </div>
 
-  <div class="chart-container">
-    <canvas id="voteChart"></canvas>
-  </div>
+    <div class="chart-container">
+      <canvas id="voteChart"></canvas>
+    </div>
+  </main>
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
   <script src="script.js"></script>
 
   <footer class="footer-bar">
