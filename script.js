@@ -23,7 +23,12 @@ function vote(pet) {
 
 // Load votes and update chart
 async function loadVotes() {
-  const { data } = await db.from("pet_votes").select("*");
+  const { data, error } = await db.from("pet_votes").select("*");
+
+  if (error) {
+    console.error(error);
+    return;
+  }
 
   const dog = data.filter(v => v.pet === "dog").length;
   const cat = data.filter(v => v.pet === "cat").length;
@@ -32,7 +37,7 @@ async function loadVotes() {
   renderChart(dog, cat, other);
 }
 
-// Render Chart.js bar graph
+// Render Chart.js graph
 function renderChart(dog, cat, other) {
   const ctx = document.getElementById("voteChart").getContext("2d");
 
@@ -46,12 +51,26 @@ function renderChart(dog, cat, other) {
         {
           label: "Votes",
           data: [dog, cat, other],
-          backgroundColor: ["#4CAF50", "#FFC107", "#F44336"]
+          backgroundColor: ["#4CAF50", "#FFC107", "#F44336"],
+          borderRadius: 6
         }
       ]
     },
     options: {
       responsive: true,
+      animation: {
+        duration: 800,
+        easing: "easeOutQuart"
+      },
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+              size: 14
+            }
+          }
+        }
+      },
       scales: {
         y: {
           beginAtZero: true,
@@ -64,7 +83,11 @@ function renderChart(dog, cat, other) {
 
 // Realtime updates
 db.channel("realtime:pet_votes")
-  .on("postgres_changes", { event: "*", schema: "public", table: "pet_votes" }, loadVotes)
+  .on(
+    "postgres_changes",
+    { event: "*", schema: "public", table: "pet_votes" },
+    loadVotes
+  )
   .subscribe();
 
 // Initial load
