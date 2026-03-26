@@ -1,13 +1,13 @@
-const SUPABASE_URL = "sb_publishable_9vRHcUQf-hwXuWEU7NyRgA_-Upmoj7Q";
-const SUPABASE_KEY = "https://zosvpxwhvumlthebbxfc.supabase.co";
+const SUPABASE_URL = "https://zosvpxwhvumlthebbxfc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_9vRHcUQf-hwXuWEU7NyRgA_-Upmoj7Q";
 
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function vote(pet) {
   await db.from("pet_votes").insert([{ pet }]);
-  loadVotes();
 }
 
+// Load initial votes
 async function loadVotes() {
   const { data } = await db.from("pet_votes").select("*");
 
@@ -20,7 +20,7 @@ async function loadVotes() {
   document.getElementById("catCount").textContent = cat;
   document.getElementById("otherCount").textContent = other;
 
-  // Calculate percentages
+  // Percentages
   const total = dog + cat + other;
   const dogPct = total ? (dog / total) * 100 : 0;
   const catPct = total ? (cat / total) * 100 : 0;
@@ -32,4 +32,16 @@ async function loadVotes() {
   document.querySelector(".otherBar").style.width = otherPct + "%";
 }
 
+// Real-time listener
+db.channel("pet-votes-channel")
+  .on(
+    "postgres_changes",
+    { event: "INSERT", schema: "public", table: "pet_votes" },
+    () => {
+      loadVotes(); // refresh graph instantly
+    }
+  )
+  .subscribe();
+
+// Initial load
 loadVotes();
