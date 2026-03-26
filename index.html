@@ -1,36 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Favorite Pet Vote</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script defer src="script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pet Vote</title>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Vote For Your Favorite Pet</h1>
 
-    <div class="buttons">
-      <button onclick="vote('dog')">Dog</button>
-      <button onclick="vote('cat')">Cat</button>
-      <button onclick="vote('other')">Other</button>
-    </div>
+  <h1>Vote for Your Favorite Pet</h1>
 
-    <h2>Current Results</h2>
-
-    <div class="results">
-      <p>🐶 Dog: <span id="dogCount">0</span></p>
-      <p>🐱 Cat: <span id="catCount">0</span></p>
-      <p>🐾 Other: <span id="otherCount">0</span></p>
-    </div>
-
-    <h2>Live Vote Graph</h2>
-
-    <div class="graph">
-      <div class="bar dogBar"><span>Dog</span></div>
-      <div class="bar catBar"><span>Cat</span></div>
-      <div class="bar otherBar"><span>Other</span></div>
-    </div>
+  <div class="buttons">
+    <button onclick="vote('dog')">Dog</button>
+    <button onclick="vote('cat')">Cat</button>
+    <button onclick="vote('other')">Other</button>
   </div>
+
+  <div class="chart-container">
+    <canvas id="voteChart"></canvas>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
